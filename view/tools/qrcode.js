@@ -50,7 +50,9 @@ TK_REGISTERS.push(() => {
   function openExternal(url) {
     const api = window.xhub;
     if (api && typeof api.openExternal === 'function') {
-      Promise.resolve(api.openExternal(url)).catch(e => toast('打开链接失败：' + ((e && e.message) || e)));
+      // 以 window.xhub.openExternal 字面量调用：平台预检按 xhub.* 文本链做权限对账，
+      // 经别名 api 调用会被判「声明了但未见调用」（v1.2.2 修正）
+      Promise.resolve(window.xhub.openExternal(url)).catch(e => toast('打开链接失败：' + ((e && e.message) || e)));
       return;
     }
     const w = window.open(url, '_blank', 'noopener');

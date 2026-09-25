@@ -1,6 +1,6 @@
 /* 小李工具箱 · 工具目录（view 与 module 共用；仅数据，无逻辑） */
 window.TK_CATALOG = {
-  version: '1.2.1',
+  version: '1.2.2',
   groups: [
     { id: 'dev',    name: '开发者' },
     { id: 'calc',   name: '计算器' },

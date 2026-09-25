@@ -53,7 +53,7 @@ x-hub 本地效率工作台扩展：开发、计算、文本、加密、练习�
 
 ## 技术说明
 
-- **运行时** `web`（纯前端，无 Node 后端）；**形态** `module + view`；**权限** `["fs", "open-url"]`（fs 当前用于导出保存：`saveAs` 弹另存为 / `saveFile` 直落下载目录；另预留路径读写能力的探测与调用——`openFiles` / `pickDirectory` / `readFile` / `saveTo` / `exists`，宿主支持时自动启用全功能；open-url（v1.2.1 新申报）仅用于二维码识别结果的「打开链接」按钮调起系统浏览器——宿主 WebView 内 `target="_blank"` 被静默拦截，必须走 `xhub.openExternal`，用户点击才触发；存储走 `xhub.storage` 免权限，无网络 / 宿主数据访问）
+- **运行时** `web`（纯前端，无 Node 后端）；**形态** `module + view`；**权限** `["fs", "open-url"]`（fs 当前用于导出保存：`saveAs` 弹另存为 / `saveFile` 直落下载目录；另预留路径读写能力的探测与调用——`openFiles` / `pickDirectory` / `readFile` / `saveTo` / `exists`，宿主支持时自动启用全功能；open-url 仅用于二维码识别结果的「打开链接」按钮调起系统浏览器——宿主 WebView 内 `target="_blank"` 被静默拦截，必须走 `xhub.openExternal`，用户点击才触发；存储走 `xhub.storage` 免权限，无网络 / 宿主数据访问）
 - 主题：`--xhub-*` 变量 + 双声明 fallback（无宿主浏览器直开预览也正常显色）
 - 无构建、无框架、无 CDN；第三方库（全部本地化在 `assets/`）：
   - `assets/md5.js`（blueimp-md5 2.19.0，MIT）
