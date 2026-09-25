@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>小李工具箱 · 摘要</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: var(--xhub-text-1, oklch(0.24 0.012 240));
+      --ink3: var(--xhub-text-3, oklch(0.62 0.008 240));
+      --primary: var(--xhub-accent, oklch(0.55 0.1 190));
+      --soft: var(--xhub-brand-soft, oklch(0.55 0.1 190 / 0.12));
+      --line: var(--xhub-border, oklch(0.9 0.006 240));
+    }
+    :root[data-xhub-theme="dark"] {
+      color-scheme: dark;
+      --ink: var(--xhub-text-1, oklch(0.93 0.008 240));
+      --ink3: var(--xhub-text-3, oklch(0.56 0.01 240));
+      --primary: var(--xhub-accent, oklch(0.74 0.11 190));
+      --soft: var(--xhub-brand-soft, oklch(0.74 0.11 190 / 0.16));
+      --line: var(--xhub-border, oklch(0.38 0.01 240));
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: transparent; color: var(--ink);
+      font: 12.5px/1.45 -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap {
+      container-type: size;
+      height: 100%; display: flex; flex-direction: column; gap: 7px;
+      padding: 12px; overflow: hidden; cursor: pointer; user-select: none;
+    }
+    .head { display: flex; align-items: center; gap: 8px; min-height: 0; }
+    .head svg { width: 18px; height: 18px; color: var(--primary); flex: none; }
+    .head b { font-size: 13.5px; white-space: nowrap; }
+    .head .n {
+      margin-left: auto; font-size: 10.5px; color: var(--primary);
+      background: var(--soft); border-radius: 999px; padding: 1px 9px; white-space: nowrap;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 5px; min-height: 0; }
+    .chips span {
+      font-size: 10.5px; color: var(--ink3); background: var(--soft);
+      border-radius: 6px; padding: 2px 8px; white-space: nowrap;
+    }
+    .chips b { color: var(--primary); font-weight: 600; }
+    .recent { flex: 1; min-height: 0; overflow: hidden; font-size: 11px; color: var(--ink3); }
+    .recent div { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+    .recent b { color: var(--primary); font-weight: 500; }
+    @container (max-height: 96px) { .chips, .recent { display: none; } }
+    @container (max-height: 130px) { .recent { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="card" title="点击打开小李工具箱">
+    <div class="head">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="8" width="18" height="12" rx="2.2"/>
+        <path d="M8.5 8V6.2A3.2 3.2 0 0 1 11.7 3h0.6a3.2 3.2 0 0 1 3.2 3.2V8"/>
+        <path d="M3 13h18"/>
+        <rect x="10.4" y="11.4" width="3.2" height="3.2" rx="0.8"/>
+      </svg>
+      <b>小李工具箱</b>
+      <span class="n" id="count"></span>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="recent" id="recent"></div>
+  </div>
+
+  <script src="../assets/catalog.js"></script>
+  <script>
+    'use strict';
+    const cat = window.TK_CATALOG;
+    document.getElementById('count').textContent = cat.tools.length + ' 项';
+    const chipBox = document.getElementById('chips');
+    for (const g of cat.groups) {
+      const n = cat.tools.filter(t => t.group === g.id).length;
+      const chip = document.createElement('span');
+      chip.append(document.createTextNode(g.name + ' '));
+      const b = document.createElement('b');
+      b.textContent = String(n);
+      chip.append(b);
+      chipBox.append(chip);
+    }
+    // 最近使用（读宿主持久化；无宿主时静默跳过）
+    function fillRecent(stats) {
+      const box = document.getElementById('recent');
+      const rec = (stats && stats.recent || []).map(id => cat.tools.find(t => t.id === id)).filter(Boolean).slice(0, 3);
+      if (!rec.length) return;
+      box.append(document.createTextNode('最近：'));
+      for (const m of rec) {
+        const row = document.createElement('div');
+        row.append(document.createTextNode('· '));
+        const b = document.createElement('b');
+        b.textContent = m.name;
+        row.append(b);
+        box.append(row);
+      }
+    }
+    try {
+      const p = window.xhub && window.xhub.storage
+        ? window.xhub.storage.get('stats')
+        : Promise.resolve(JSON.parse(localStorage.getItem('tk.stats') || 'null'));
+      p.then(fillRecent).catch(() => {});
+    } catch (e) { /* 忽略 */ }
+    // 点击打开 view 形态
+    document.getElementById('card').addEventListener('click', () => {
+      try { window.xhub && window.xhub.runtime && window.xhub.runtime.open('view'); } catch (e) { /* 无宿主预览 */ }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# 宿主写入扩展目录的运行时/键值存储（本机用户数据，不入库）
+.storage.json
+.config.json
+.data/
+
+# 系统杂项
+Thumbs.db
+Desktop.ini
+*.log

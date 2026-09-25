@@ -1,0 +1,24 @@
+{
+  "id": "com.avalonlee.toolkit",
+  "name": "小李工具箱",
+  "version": "1.2.1",
+  "runtime": "web",
+  "kind": "view",
+  "surfaces": [
+    "module",
+    "view"
+  ],
+  "openIn": [
+    "view"
+  ],
+  "entry": {
+    "module": "./module/index.html",
+    "view": "./view/index.html"
+  },
+  "permissions": [
+    "fs",
+    "open-url"
+  ],
+  "icon": "./icon.svg",
+  "description": "开发、计算、文本、加密、练习、PDF、图像、办公八组 38 项本地小工具，数据不出本机（fs 仅用于导出保存文件；open-url 仅在点击「打开链接」时调起系统浏览器）"
+}
